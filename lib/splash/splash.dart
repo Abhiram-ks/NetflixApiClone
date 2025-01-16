@@ -1,5 +1,5 @@
 import 'package:api_netflix/core/color/color.dart';
-import 'package:api_netflix/downloads/main/screen_main_page.dart';
+import 'package:api_netflix/presentation/main/screen_main_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
