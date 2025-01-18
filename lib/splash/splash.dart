@@ -1,5 +1,5 @@
 import 'package:api_netflix/core/color/color.dart';
-import 'package:api_netflix/presentation/main/screen_main_page.dart';
+import 'package:api_netflix/presentation/mainpage/screen_main_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState(){
     super.initState();
 
-    Future.delayed(const Duration(seconds: 3), (){
+    Future.delayed(const Duration(milliseconds: 2700), (){
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ScreenMainPage(),));
     });

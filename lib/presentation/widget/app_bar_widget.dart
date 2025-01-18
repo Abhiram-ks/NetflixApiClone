@@ -21,7 +21,10 @@ class AppBarWidget extends StatelessWidget {
         const Icon(Icons.cast, color: white, size: 30),
         width,
         Container(
+          decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(4),
           color: const Color.fromARGB(255, 19, 89, 67),
+          ),
           height: 30,
           width: 30,
           child: Column(
@@ -52,7 +55,7 @@ class AppBarWidget extends StatelessWidget {
               ]),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0,right: 10),
-                child: Divider(),
+                child: Divider(thickness: 2,),
               )
             ],
           ),

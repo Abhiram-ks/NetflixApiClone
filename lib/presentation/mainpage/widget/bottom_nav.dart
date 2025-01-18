@@ -25,11 +25,21 @@ class BottomNavigation extends StatelessWidget {
           ),
           backgroundColor: black,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.video_library_outlined), label: 'New & Hot'),
-            BottomNavigationBarItem(icon: Icon(Icons.emoji_emotions_outlined),label: 'Fast Laughs'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-            BottomNavigationBarItem(icon: Icon(Icons.arrow_circle_down_rounded),label: 'Downloads'),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined), label: 'Home'),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.video_collection_rounded),
+              icon: Icon(Icons.video_library_outlined), label: 'New & Hot',),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.emoji_emotions_sharp),
+              icon: Icon(Icons.emoji_emotions_outlined),label: 'Fast Laughs'),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.search_outlined),
+              icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.download_for_offline_sharp),
+              icon: Icon(Icons.arrow_circle_down_rounded),label: 'Downloads'),
           ],
         );
       },
