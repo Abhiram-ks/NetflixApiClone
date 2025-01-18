@@ -3,18 +3,28 @@ import 'package:api_netflix/core/color/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants.dart';
 import 'video_emotion.dart';
 
 class VideoListItem extends StatelessWidget {
+  final AsyncSnapshot snapshot;
   final int index;
-  const VideoListItem({super.key,required this.index});
+  const VideoListItem({super.key,required this.index,required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-        color:Colors.accents[index % Colors.accents.length] ,
+         decoration: BoxDecoration(
+        borderRadius: kRadius9,
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(
+         '${Constants.imagePath}${snapshot.data[index].poseterPath}',
+        
+        ))
+      ),
       ),
       Align(
         alignment: Alignment.bottomCenter,
@@ -39,7 +49,7 @@ class VideoListItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: CircleAvatar(
                     radius: 24,
-                    backgroundImage: NetworkImage('https://www.thefashionisto.com/wp-content/uploads/2018/05/Good-Looking-Man-800x1200.jpg'),
+                    backgroundImage: NetworkImage('${Constants.imagePath}${snapshot.data[index].backDropPath}'),
                   ),
                 ),
                  VideoEmotionsActions(icon: Icons.emoji_emotions, title: 'LOL'),

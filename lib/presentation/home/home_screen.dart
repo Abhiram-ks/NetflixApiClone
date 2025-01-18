@@ -1,15 +1,39 @@
+import 'package:api_netflix/api/api.dart';
+import 'package:api_netflix/core/color/color.dart';
 import 'package:api_netflix/core/constants.dart';
 import 'package:api_netflix/presentation/home/screens/animated_container.dart';
 import 'package:api_netflix/presentation/home/screens/background_card.dart';
 import 'package:api_netflix/presentation/home/screens/main_title_card.dart';
-import 'package:api_netflix/presentation/home/screens/number_title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../models/movie.dart';
+import 'screens/number_title_widget.dart';
+
 ValueNotifier<bool> scrollNOtifier = ValueNotifier<bool>(true);
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+} 
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<Movie>> topMovies;
+  late Future<List<Movie>> trandingMovie;
+  late Future<List<Movie>> dramaMovie;
+  late Future<List<Movie>> southIndianMovie;
+  late Future<List<Movie>> top10show;
+
+  @override
+  void initState(){
+    super.initState();
+    topMovies = ApiService().topMovies();
+    trandingMovie = ApiService().trandingMovie();
+    dramaMovie = ApiService().dramaMovie();
+    southIndianMovie = ApiService().southIndiaMovie();
+    top10show = ApiService().top10TvShow();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +60,79 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         hight,
-                        const MainTitleCardWidget(
-                            title: "Relesed in the Past Year"),
-                        const MainTitleCardWidget(title: "Trending Now"),
-                        hight,
-                        NumberTitleCard(),
-                        const MainTitleCardWidget(title: "Tense Dramas"),
-                        const MainTitleCardWidget(title: "South Indian Cinema"),
+                         FutureBuilder(future: topMovies, 
+                         builder: (context, snapshot){
+                           if (snapshot.hasError) {
+                              return Center(
+                               child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                             );
+                           } else if(snapshot.hasData){
+                             return   MainTitleCardWidget(
+                           title: "Relesed in the Past Year",snapshot: snapshot,
+                           );
+                           }else{
+                            return Center(
+                               child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                             );
+                           }
+                         },),
+                        FutureBuilder(future: trandingMovie, builder: (context, snapshot){
+                          if (snapshot.hasError) {
+                              return Center(
+                              child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                            );
+                          }else if(snapshot.hasData){
+                            return MainTitleCardWidget(
+                              title: "Tense Dramas", snapshot: snapshot);
+                          }else{
+                            return Center(
+                              child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                            );
+                          }
+                        }
+                        ,) ,hight,
+                         FutureBuilder(future: top10show, builder: (context, snapshot){
+                           if (snapshot.hasError) {
+                               return Center(
+                               child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                             );
+                           }else if(snapshot.hasData){
+                             return NumberTitleCard(snapshot: snapshot,);
+                           }else{
+                             return Center(
+                               child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                             );
+                           }
+                         }
+                         ,) ,
+                        FutureBuilder(future: dramaMovie, builder: (context, snapshot) {
+                          if (snapshot.hasError){
+                            return Center(
+                                child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                              );
+                          }else if(snapshot.hasData){
+                             return MainTitleCardWidget(
+                              title: "Trending Now", snapshot: snapshot);
+                          }else{
+                              return Center(
+                              child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                            );
+                          }
+                        },),hight,
+                        FutureBuilder(future: southIndianMovie, builder: (context, snapshot) {
+                            if (snapshot.hasError){
+                             return Center(
+                                child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                              );
+                            }else if(snapshot.hasData){
+                               return MainTitleCardWidget(
+                                title: "South Indian Cinema", snapshot: snapshot);
+                            }else{
+                                return Center(
+                                child: CircularProgressIndicator(color:red,backgroundColor: black,),
+                              );
+                            }
+                          },),
                       ],
                     ),
                   )

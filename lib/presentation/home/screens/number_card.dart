@@ -7,7 +7,8 @@ import '../../../core/constants.dart';
 
 class NumberCardWidget extends StatelessWidget {
   final int index;
-  const NumberCardWidget({super.key,required this.index});
+   final AsyncSnapshot snapshot;
+  const NumberCardWidget({super.key,required this.index,required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class NumberCardWidget extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                  'https://i.pinimg.com/736x/6d/b8/a1/6db8a14241c09e8a322516bb0a9d6b13.jpg'
+                 '${Constants.imagePath}${snapshot.data[index].poseterPath}',
                 ))
               ),
             ),

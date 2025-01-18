@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 
 class HomeMainCard extends StatelessWidget {
+  final AsyncSnapshot snapshot;
+  final int index;
   const HomeMainCard({
-    super.key,
+    super.key, required this.snapshot,required this.index,
   });
 
 
@@ -20,7 +22,8 @@ class HomeMainCard extends StatelessWidget {
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(
-          'https://s3.amazonaws.com/static.rogerebert.com/uploads/movie/movie_poster/the-ghost-of-peter-sellers-2020/large_peter-poster.jpg'
+         '${Constants.imagePath}${snapshot.data[index].poseterPath}',
+        
         ))
       ),
     );

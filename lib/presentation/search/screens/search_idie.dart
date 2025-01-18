@@ -1,28 +1,66 @@
+import 'package:api_netflix/api/api.dart';
 import 'package:api_netflix/core/color/color.dart';
 import 'package:api_netflix/core/constants.dart';
 import 'package:api_netflix/presentation/search/screens/search_text_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/movie.dart';
+
 const imageUrl =
     "https://image.tmdb.org/t/p/w1280/6BT2vjhg6L76O4O74dFikNqZvLA.jpg";
 
-class SearchIdieWidget extends StatelessWidget {
+class SearchIdieWidget extends StatefulWidget {
   const SearchIdieWidget({super.key});
+
+  @override
+  State<SearchIdieWidget> createState() => _SearchIdieWidgetState();
+}
+
+class _SearchIdieWidgetState extends State<SearchIdieWidget> {
+  late Future<List<Movie>> searchList;
+
+  @override
+  void initState() {
+    super.initState();
+    searchList = ApiService().dramaMovie();
+  }
 
   @override
   Widget build(BuildContext context) {
     var children = [
-        const SearchTextTitle(title: 'Top Search',),
-        hight,
-        Expanded(
-          child: ListView.separated(
-             shrinkWrap: true,
-              itemBuilder: (context, index) => TopSearchIteamIdiel(),
-              separatorBuilder: (context, index) => khight18,
-              itemCount: 15),
-        )
-      ];
+      const SearchTextTitle(
+        title: 'Top Search',
+      ),
+      hight,
+      Expanded(
+          child: FutureBuilder(
+        future: searchList,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: red,
+                backgroundColor: black,
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => TopSearchIteamIdiel(snapshot: snapshot,index: index,),
+                separatorBuilder: (context, index) => khight18,
+                itemCount: 20);
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: red,
+                backgroundColor: black,
+              ),
+            );
+          }
+        },
+      ))
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -30,9 +68,10 @@ class SearchIdieWidget extends StatelessWidget {
   }
 }
 
-
 class TopSearchIteamIdiel extends StatelessWidget {
-  const TopSearchIteamIdiel({super.key});
+   final AsyncSnapshot snapshot;
+   final int index;
+  const TopSearchIteamIdiel({super.key, required this.snapshot, required this.index,});
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +85,28 @@ class TopSearchIteamIdiel extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
-                imageUrl,
+                '${Constants.imagePath}${snapshot.data[index].poseterPath}',
               ),
             ),
           ),
-        ),width,
-        const Expanded(child: Text('Movie name',style: TextStyle(color: white,fontWeight: FontWeight.bold,fontSize: 16),)),
+        ),
+        width,
+         Expanded(
+            child: Text(
+          '${snapshot.data[index].originalTitile}',
+          style: TextStyle(
+              color: white, fontWeight: FontWeight.bold, fontSize: 16),
+        )),
         const CircleAvatar(
           backgroundColor: white,
           radius: 24,
           child: CircleAvatar(
             backgroundColor: black,
             radius: 23.4,
-            child: Icon(CupertinoIcons.play_arrow_solid, color: white,),
+            child: Icon(
+              CupertinoIcons.play_arrow_solid,
+              color: white,
+            ),
           ),
         )
       ],

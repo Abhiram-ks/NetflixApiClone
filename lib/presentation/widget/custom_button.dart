@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 class CustomButtonWidget extends StatelessWidget {
   final String title; 
   final IconData icon; 
+  final double iconSize;
+  final double textSize;
 
   const CustomButtonWidget({
     super.key,
     required this.icon,
     required this.title,
+    this.iconSize = 25,
+    this.textSize = 12,
   });
 
   @override
@@ -19,14 +23,14 @@ class CustomButtonWidget extends StatelessWidget {
         Icon(
           icon,
           color: white,
-          size: 25,
+          size: iconSize,
         ),
         Text(
           title,
-          style: const TextStyle(
+          style:  TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w900,
-            fontSize: 12,
+            fontSize: textSize,
           ),
         ),
       ],

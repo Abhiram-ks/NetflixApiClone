@@ -1,5 +1,7 @@
 import 'package:api_netflix/core/color/color.dart';
 import 'package:api_netflix/core/constants.dart';
+import 'package:api_netflix/presentation/new_hot/screens/commingsoon_widget.dart';
+import 'package:api_netflix/presentation/new_hot/screens/everyones_watching.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -90,68 +92,24 @@ class NewHotScreen extends StatelessWidget {
                 ]),
           ),
           body: TabBarView(children: [
-            _buildEveryONesWatching(context),
+            _buildEveryONesWatching(),
             _buildCommingSoon(),
-            
           ]),
         ));
   }
 }
 
-Widget _buildEveryONesWatching(BuildContext context) {
-  final Size size = MediaQuery.of(context).size;
-  return ListView(
-    children: [
-      hight,
-      Row(
-        children: [
-          SizedBox(width: 50,height: 500,child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-            Text('FEB',style: TextStyle(color: avatarGray,fontWeight: FontWeight.bold),),
-            Text('11',style:TextStyle(fontSize: 33,fontWeight: FontWeight.w900,letterSpacing: 4),),
-          ],),),
-          SizedBox(
-            width: size.width-60,
-            height: 500,
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 170,
-                        child: Image.network(commingSoonImage,fit: BoxFit.cover,),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: CircleAvatar(
-                        radius: 17,
-                        // ignore: deprecated_member_use
-                        backgroundColor: black.withOpacity(0.5),
-                        child: IconButton(onPressed: (){},
-                         icon: Icon(Icons.volume_off,color: white,size: 17,)),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      )
-    ],
+Widget _buildEveryONesWatching() {
+  return ListView.builder(
+    itemCount: 15,
+    itemBuilder: (context, index) => const CommingSoonWIdgetMain(),
   );
 }
 
 Widget _buildCommingSoon() {
-  return Container(
-    width: double.infinity,
-    height: 100,
-    color: white,
-  );
+  return ListView.builder(
+    itemCount: 15,
+    itemBuilder: (context, index) => EveryonesWachingWIdget(),);
 }
+
+

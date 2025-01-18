@@ -7,8 +7,10 @@ import '../../widget/main_card_widget.dart';
 
 class MainTitleCardWidget extends StatelessWidget {
   final String title;
+  final AsyncSnapshot snapshot;
+
   const MainTitleCardWidget({
-    super.key,required this.title,
+    super.key,required this.title, required this.snapshot,
   });
 
   @override
@@ -20,7 +22,7 @@ class MainTitleCardWidget extends StatelessWidget {
           maxHeight: 176,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemBuilder:(context, index) => HomeMainCard(),
+            itemBuilder:(context, index) => HomeMainCard(snapshot: snapshot,index: index,),
              separatorBuilder: (context, index) => kwidth8, itemCount: 10)
         ),
         hight,

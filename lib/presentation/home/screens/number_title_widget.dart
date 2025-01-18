@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import '../../../core/constants.dart';
 
 class NumberTitleCard extends StatelessWidget {
+  final AsyncSnapshot snapshot;
   const NumberTitleCard({
-    super.key,
+    super.key,required this.snapshot,
   });
 
   @override
@@ -14,14 +15,14 @@ class NumberTitleCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       const MainTitleWidget(title: "Top 10 TV shows in india Today"),
+       const MainTitleWidget(title: "Top 20 TV shows in india Today"),
         LimitedBox(
             maxHeight: 176,
             child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => NumberCardWidget(index: index),
+                itemBuilder: (context, index) => NumberCardWidget(index: index,snapshot: snapshot,),
                 separatorBuilder: (context, index) => kwidth8,
-                itemCount: 10)),
+                itemCount: 20,)),
         hight,
       ],
     );
