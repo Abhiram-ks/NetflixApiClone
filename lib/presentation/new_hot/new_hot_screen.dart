@@ -1,7 +1,9 @@
+import 'package:api_netflix/api/api.dart';
 import 'package:api_netflix/core/color/color.dart';
 import 'package:api_netflix/core/constants.dart';
+import 'package:api_netflix/models/movie.dart';
 import 'package:api_netflix/presentation/new_hot/screens/commingsoon_widget.dart';
-import 'package:api_netflix/presentation/new_hot/screens/everyones_watching.dart';
+import 'package:api_netflix/presentation/new_hot/screens/everyones_start.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -92,24 +94,71 @@ class NewHotScreen extends StatelessWidget {
                 ]),
           ),
           body: TabBarView(children: [
+            
             _buildEveryONesWatching(),
             _buildCommingSoon(),
+            
           ]),
         ));
   }
 }
 
 Widget _buildEveryONesWatching() {
-  return ListView.builder(
-    itemCount: 15,
-    itemBuilder: (context, index) => const CommingSoonWIdgetMain(),
-  );
+     return CommingSoonStart();
+
 }
+
+
+
 
 Widget _buildCommingSoon() {
-  return ListView.builder(
-    itemCount: 15,
-    itemBuilder: (context, index) => EveryonesWachingWIdget(),);
+     return EveryOnesStart();
 }
 
 
+class CommingSoonStart extends StatefulWidget {
+  const CommingSoonStart({super.key});
+
+  @override
+  State<CommingSoonStart> createState() => _CommingSoonStartState();
+}
+
+class _CommingSoonStartState extends State<CommingSoonStart> {
+  late Future<List<Movie>> commingSoonMovie;
+
+  @override
+  void initState(){
+    super.initState();
+    commingSoonMovie = ApiService().fetchAllMovies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: commingSoonMovie, 
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: red, backgroundColor: black,
+            ),
+          );
+        }else if(snapshot.hasData){
+         return ListView.builder(
+          shrinkWrap: true,
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) =>
+            CommingSoonWIdgetMain(index: index,snapshot: snapshot,)
+          
+          ,);
+        }else{
+          return Center(
+            child:  CircularProgressIndicator(
+              color: red,backgroundColor: black,
+            ),
+          );
+        }
+      },
+      );
+  }
+}

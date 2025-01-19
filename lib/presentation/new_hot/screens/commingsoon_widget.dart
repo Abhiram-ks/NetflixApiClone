@@ -7,8 +7,11 @@ import '../../../core/constants.dart';
 import '../../widget/custom_button.dart';
 
 class CommingSoonWIdgetMain extends StatelessWidget {
+  final AsyncSnapshot snapshot;
+  final int index;
   const CommingSoonWIdgetMain({
-    super.key,
+    super.key, required this.snapshot, required this.index,
+    
   });
 
 
@@ -32,7 +35,7 @@ class CommingSoonWIdgetMain extends StatelessWidget {
                         TextStyle(color: avatarGray, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '11',
+                    '${index + 1}',
                     style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.w900,
@@ -47,7 +50,7 @@ class CommingSoonWIdgetMain extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  VideoShowWIdget(imageUrl:commingSoonImage ),
+                  VideoShowWIdget(imageUrl:'${Constants.imagePath}${snapshot.data[index].poseterPath}',),
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -55,7 +58,7 @@ class CommingSoonWIdgetMain extends StatelessWidget {
                         child: SizedBox(
                           height: 50,
                           child: Text(
-                            'TALL GIRL 2',
+                            '${snapshot.data[index].originalName}',
                             style: GoogleFonts.atma(
                               fontSize: 36,
                               fontWeight: FontWeight.w500,
@@ -83,12 +86,12 @@ class CommingSoonWIdgetMain extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text('Comming on Friday'),
+                  Text('Comming on ${snapshot.data[index].originalName}'),
                   hight,
                   Image.network('https://vectorseek.com/wp-content/uploads/2023/10/Netflix-Films-Logo-Vector.png',height:30 ,width: 60,),hight,
-                  Text('Tall Girl 2',style: GoogleFonts.lexend(fontWeight: FontWeight.w900,fontSize: 18,height: 1.7)
+                  Text('${snapshot.data[index].originalName}',style: GoogleFonts.lexend(fontWeight: FontWeight.w900,fontSize: 18,height: 1.7)
                   ,),hight,
-                  Text('Landing the lead in the school musical is a dream come true for jodi, until the pressure sends her confidence -- and her relactionship -- info a tailpin. ',style: TextStyle(color: avatarGray),
+                  Text('${snapshot.data[index].overview}',style: TextStyle(color: avatarGray),
                   overflow: TextOverflow.ellipsis,maxLines: 5,
                   )
                 ],

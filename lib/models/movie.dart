@@ -6,6 +6,8 @@ class Movie {
   String popularity;
   String poseterPath;
   String releaseDate;
+  String originalName;
+  String? category;
 
   Movie({
     required this.title,
@@ -15,13 +17,16 @@ class Movie {
     required this.popularity,
     required this.poseterPath,
     required this.releaseDate,
+    required this.originalName,
+    this.category, 
   });
 
   factory Movie.formJson(Map<String, dynamic> json) {
     return Movie(
       title: json["title"] ?? "Clear Cache and Cookies",
       backDropPath: json["backdrop_path"] ?? "",
-      originalTitile: json["original_title"] ?? "",
+      originalTitile: json["original_title"] ?? "",  
+      originalName: json["original_name"] ?? "",  
       overview: json["overview"] ?? "",
       popularity: (json["popularity"] ?? 0.0).toString(),
       poseterPath: json["poster_path"] ?? "https://www.youtube.com/watch?v=GV3HUDMQ-F8",

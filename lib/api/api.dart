@@ -10,6 +10,10 @@ class ApiService {
   static const _dramaUrl ='https://api.themoviedb.org/3/discover/tv?api_key=${Constants.apiKey}';
   static const _southIndiaUrl = "https://api.themoviedb.org/3/discover/tv?api_key=${Constants.apiKey}&with_original_language=hi&sort_by=popularity.desc";
   static const _top10ShowUrl ="https://api.themoviedb.org/3/discover/tv?api_key=${Constants.apiKey}";
+  static const _upcommingUrl ="https://api.themoviedb.org/3/tv/top_rated?api_key=${Constants.apiKey}&with_original_language=hi&sort_by=popularity.desc";
+  static const _upcommingUrl2 ="https://api.themoviedb.org/3/tv/popular?api_key=${Constants.apiKey}&with_original_language=hi&sort_by=popularity.desc";
+  static const _commingsoon1 ="https://api.themoviedb.org/3/tv/on_the_air?api_key=${Constants.apiKey}&with_original_language=hi&sort_by=popularity.desc";
+  static const _commingsoon2 ="https://api.themoviedb.org/3/tv/airing_today?api_key=${Constants.apiKey}&with_original_language=hi&sort_by=popularity.desc";
 
   Future<List<Movie>> topMovies() async {
     final response = await http.get(Uri.parse(_topRatedUrl));
@@ -60,4 +64,79 @@ class ApiService {
       throw Exception('Failed to load top-rated movies. Status Code: ${response.statusCode}');
     }
   }
+
+    Future<List<Movie>> upcommingMovie() async {
+    final response = await http.get(Uri.parse(_upcommingUrl));
+    if (response.statusCode == 200) {
+      final decodeData = jsonDecode(response.body)['results'] as List;
+      return decodeData.map((movie) => Movie.formJson(movie)).toList();
+    } else {
+      throw Exception('Failed to load top-rated movies. Status Code: ${response.statusCode}');
+    }
+  }
+   Future<List<Movie>> fetchAllMovies() async {
+    try {
+      final responses = await Future.wait([
+        http.get(Uri.parse(_upcommingUrl2)),
+        http.get(Uri.parse(_upcommingUrl)),
+      ]);
+
+      List<Movie> allMovies = [];
+      for (var i = 0; i < responses.length; i++) {
+        if (responses[i].statusCode == 200) {
+          final decodeData = jsonDecode(responses[i].body)['results'] as List;
+          final categoryMovies = decodeData.map((movie) => Movie.formJson(movie)).toList();
+
+          switch (i) {
+            case 0:
+              allMovies.addAll(categoryMovies.map((movie) => movie..category = "Upcoming"));
+              break;
+            case 1:
+              allMovies.addAll(categoryMovies.map((movie) => movie..category = "Upcoming2"));
+              break;
+          }
+        } else {
+          throw Exception('Failed to load movies from API ${i + 1}');
+        }
+      }
+
+      return allMovies;
+    } catch (e) {
+      throw Exception('Failed to fetch all movies: $e');
+    }
+  }
+
+     Future<List<Movie>> fetchAllCommingMovie() async {
+    try {
+      final responses = await Future.wait([
+        http.get(Uri.parse(_commingsoon2)),
+        http.get(Uri.parse(_commingsoon1)),
+      ]);
+
+      List<Movie> allMovies = [];
+      for (var i = 0; i < responses.length; i++) {
+        if (responses[i].statusCode == 200) {
+          final decodeData = jsonDecode(responses[i].body)['results'] as List;
+          final categoryMovies = decodeData.map((movie) => Movie.formJson(movie)).toList();
+
+          switch (i) {
+            case 0:
+              allMovies.addAll(categoryMovies.map((movie) => movie..category = "commingSoon1"));
+              break;
+            case 1:
+              allMovies.addAll(categoryMovies.map((movie) => movie..category = "commingSoon2"));
+              break;
+          }
+        } else {
+          throw Exception('Failed to load movies from API ${i + 1}');
+        }
+      }
+
+      return allMovies;
+    } catch (e) {
+      throw Exception('Failed to fetch all movies: $e');
+    }
+  }
+
+  
 }

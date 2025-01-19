@@ -1,14 +1,16 @@
 import 'package:api_netflix/presentation/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../core/color/color.dart';
 import '../../../core/constants.dart';
 import '../../widget/vidoe_widget.dart';
 
 class EveryonesWachingWIdget extends StatelessWidget {
+  final AsyncSnapshot snapshot;
+  final int index;
+
   const EveryonesWachingWIdget({
-    super.key,
+    super.key, required this.snapshot, required this.index,
   });
 
   @override
@@ -20,17 +22,17 @@ class EveryonesWachingWIdget extends StatelessWidget {
             children: [
             hight,
              Text(
-                'Friends',
+                '${snapshot.data[index].originalName}',
                 style: GoogleFonts.lexend(
                     fontWeight: FontWeight.w900, fontSize: 18, height: 1.7),
               ),
-              const Text(
-                'Landing the lead in the school musical is a dream come true for jodi, until the pressure sends her confidence -- and her relactionship -- info a tailpin.',
+               Text(
+                '${snapshot.data[index].overview}',
                 style: TextStyle(color: avatarGray),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 6,
               ),hight35,
-             const VideoShowWIdget(imageUrl: everyonesImage,),hight,
+              VideoShowWIdget(imageUrl: '${Constants.imagePath}${snapshot.data[index].poseterPath}',),hight,
              Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
