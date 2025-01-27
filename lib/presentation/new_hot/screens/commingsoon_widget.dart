@@ -86,7 +86,7 @@ class CommingSoonWIdgetMain extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text('Comming on ${snapshot.data[index].originalName}'),
+                  Text('Comming on ${snapshot.data[index].relesedOn}'),
                   hight,
                   Image.network('https://vectorseek.com/wp-content/uploads/2023/10/Netflix-Films-Logo-Vector.png',height:30 ,width: 60,),hight,
                   Text('${snapshot.data[index].originalName}',style: GoogleFonts.lexend(fontWeight: FontWeight.w900,fontSize: 18,height: 1.7)

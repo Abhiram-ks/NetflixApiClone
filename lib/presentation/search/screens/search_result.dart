@@ -1,28 +1,16 @@
+import 'package:api_netflix/api/api.dart';
 import 'package:api_netflix/core/constants.dart';
+import 'package:api_netflix/models/movie.dart';
 import 'package:api_netflix/presentation/search/screens/search_text_title.dart';
 import 'package:flutter/material.dart';
 
-import '../../../api/api.dart';
 import '../../../core/color/color.dart';
-import '../../../models/movie.dart';
 
-const imageURl2 =
-    "https://image.tmdb.org/t/p/original/wigZBAmNrIhxp2FNGOROUAeHvdh.jpg";
 
-class SearchResultWidget extends StatefulWidget {
-  const SearchResultWidget({super.key});
 
-  @override
-  State<SearchResultWidget> createState() => _SearchResultWidgetState();
-}
-
-class _SearchResultWidgetState extends State<SearchResultWidget> {
-  late Future<List<Movie>> movieTvList;
-  @override
-  void initState() {
-    super.initState();
-    movieTvList = ApiService().top10TvShow();
-  }
+class SearchResultWidget extends StatelessWidget {
+  final String result;
+  const SearchResultWidget({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) {
@@ -33,33 +21,37 @@ class _SearchResultWidgetState extends State<SearchResultWidget> {
         hight,
         Expanded(
             child: FutureBuilder(
-          future: movieTvList,
+          future:ApiService().searchResult(result) ,
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(
                   color: red,
                   backgroundColor: black,
                 ),
               );
-            } else if (snapshot.hasData) {
-              return GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                childAspectRatio: 1.1 / 1.6,
-                children: List.generate(20, (index) {
-                  return  MainCardWidget(index: index,snapshot: snapshot,);
-                }),
+            } else if(snapshot.hasError){
+              return const Center(
+                child: Text('Error Loading data ⚠️',style: TextStyle(color: white),),
               );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: red,
-                  backgroundColor: black,
-                ),
+            } else if(!snapshot.hasData || snapshot.data!.isEmpty){
+              return const Center(
+                child: Text('No Data Found ⁉️',style: TextStyle(color: red),),
               );
+            }else{
+               return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 1/1.4,
+                ), 
+                itemBuilder:(context, index) {
+                  var data = snapshot.data![index];
+                  return MainCardWidget(
+                    movie: data,
+                  );
+                },
+                );
             }
           },
         ))
@@ -69,10 +61,9 @@ class _SearchResultWidgetState extends State<SearchResultWidget> {
 }
 
 class MainCardWidget extends StatelessWidget {
-  final AsyncSnapshot snapshot;
-  final int index;
+  final Movie movie;
   const MainCardWidget(
-      {super.key, required this.snapshot, required this.index});
+      {super.key, required this.movie, });
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +73,7 @@ class MainCardWidget extends StatelessWidget {
           image:  DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
-                '${Constants.imagePath}${snapshot.data[index].poseterPath}',
+                '${Constants.imagePath}${movie.poseterPath}',
               ))),
     );
   }

@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-
 import '../../../core/color/color.dart';
 import '../../../core/constants.dart';
 
@@ -21,7 +20,7 @@ class CustomAnimatedCotainer extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.network(
+                   Image.network(
                   'https://static.vecteezy.com/system/resources/previews/019/956/195/non_2x/netflix-transparent-netflix-free-free-png.png',
                   width: 65,
                   height: 62,
@@ -74,7 +73,7 @@ class CustomAnimatedCotainer extends StatelessWidget {
                             left: 5.0, right: 10),
                         child: Divider(
                           thickness: 2,
-                        ),
+                        ), 
                       )
                     ],
                   ),

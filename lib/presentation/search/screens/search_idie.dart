@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 
 import '../../../models/movie.dart';
 
-const imageUrl =
-    "https://image.tmdb.org/t/p/w1280/6BT2vjhg6L76O4O74dFikNqZvLA.jpg";
 
 class SearchIdieWidget extends StatefulWidget {
   const SearchIdieWidget({super.key});

@@ -66,14 +66,20 @@ class ApiService {
   }
 
     Future<List<Movie>> upcommingMovie() async {
+      //after the uri.parse to convert the object to response value is like stauscode header and body
     final response = await http.get(Uri.parse(_upcommingUrl));
     if (response.statusCode == 200) {
+      //Parses the JSON string in the response body into a Dart object.
       final decodeData = jsonDecode(response.body)['results'] as List;
       return decodeData.map((movie) => Movie.formJson(movie)).toList();
     } else {
       throw Exception('Failed to load top-rated movies. Status Code: ${response.statusCode}');
     }
   }
+  
+
+
+
    Future<List<Movie>> fetchAllMovies() async {
     try {
       final responses = await Future.wait([
@@ -137,6 +143,22 @@ class ApiService {
       throw Exception('Failed to fetch all movies: $e');
     }
   }
+Future<List<Movie>> searchResult(String movie) async {
+  if (movie.trim().isEmpty) {
+    return []; 
+  }
+  String resultApi = "https://api.themoviedb.org/3/search/movie?api_key=${Constants.apiKey}&query=$movie";
 
-  
+  final response = await http.get(Uri.parse(resultApi));
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body)["results"] as List;
+    return responseData.map((movie) => Movie.formJson(movie)).toList();
+  } else {
+    throw Exception('Something went wrong');
+  }
 }
+}
+
+
+
+
